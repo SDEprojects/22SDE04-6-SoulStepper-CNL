@@ -1,8 +1,8 @@
-<<<<<<< HEAD:client/src/com/group5/gameSetup/Instruction.java
+/*<<<<<<< HEAD:client/src/com/group5/gameSetup/Instruction.java*/
 package com.group5.gameSetup;
-=======
+/*=======*/
 
->>>>>>> origin/main:client/src/Instruction.java
+/*>>>>>>> origin/main:client/src/Instruction.java*/
 
 import java.util.concurrent.TimeUnit;
 
