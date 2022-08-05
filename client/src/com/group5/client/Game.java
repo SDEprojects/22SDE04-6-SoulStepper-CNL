@@ -52,8 +52,9 @@ public class Game {
             String choice = scanner.nextLine().toLowerCase();
             String[] arrayChoice = choice.split(" ", 2);
 
-            while (arrayChoice.length<= 1 && !arrayChoice[0].equals("save")){
-                System.out.println("INVAILD COMMAND");
+            //This While loop takes care of user input for single word choice
+            while (arrayChoice.length <= 1 && !arrayChoice[0].equals("save")){
+                System.out.println("Invalid command");
                 choice = scanner.nextLine().toLowerCase();
                 arrayChoice = choice.split(" ", 2);
             }
