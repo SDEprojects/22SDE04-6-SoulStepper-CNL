@@ -1,13 +1,13 @@
-
 package com.group5.gameSetup;
-
-
 import java.util.concurrent.TimeUnit;
+
 
 public class Instruction {
 
+    GameSetup forMusic = new GameSetup();
     public void showInstruction() throws InterruptedException {
 
+        forMusic.startBackgroundMusic();
         System.out.println("WELCOME TO SOUL STEPPER");
         TimeUnit.MILLISECONDS.sleep(1500);
         System.out.println();
@@ -37,7 +37,8 @@ public class Instruction {
         TimeUnit.MILLISECONDS.sleep(1500);
         System.out.println("\033[1;35m");
         System.out.println("Commands: \n To move = go [direction] \n To get items = get [item] \n To use items = use [item] " +
-                "\n To look = look [direction] \n Exit Game = quit \n To save = save game \n To load = load game ");
+                "\n To look = look [direction] \n Exit Game = quit \n To save = save game \n To load = load game " +
+                "\n To stop music = stop music.");
         System.out.println("\033[0m");
         TimeUnit.MILLISECONDS.sleep(1500);
         System.out.println();
