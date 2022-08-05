@@ -4,6 +4,8 @@ import com.group5.character.Player;
 import com.group5.gameSetup.GameSetup;
 import com.group5.gameSetup.Instruction;
 import com.group5.items.Items;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -22,15 +24,17 @@ public class Game {
     ArrayList<String> get = new ArrayList<>(Arrays.asList("get", "acquire", "obtain", "receive", "gain", "grab", "pick up", "take", "pull", "draw"));
     ArrayList<String> use = new ArrayList<>(Arrays.asList("use", "utilize", "operate"));
     ArrayList<String> view = new ArrayList<>(Arrays.asList("check", "current"));
+    ArrayList<String> music = new ArrayList<>(Arrays.asList("play", "continue", "soul step"));
+    ArrayList<String> stopMusic = new ArrayList<>(Arrays.asList("stop", "drop the mic", "pause", "drop the beat"));
 
-    public void play() throws InterruptedException {
-
+    public void play() throws InterruptedException, IOException {
         Instruction instruction = new Instruction();
         instruction.showInstruction();
         GameSetup gameSetup = new GameSetup();
         Player soulStepper = new Player("SoulStepper", 100);
         Scanner scanner = new Scanner(System.in);
         Items item = new Items();
+
         while (true) {
             System.out.println("You are now at " + gameSetup.currentLocation.getName());
 
@@ -47,9 +51,25 @@ public class Game {
             }
             String choice = scanner.nextLine().toLowerCase();
             String[] arrayChoice = choice.split(" ", 2);
+
+            while (arrayChoice.length<= 1 && !arrayChoice[0].equals("save")){
+                System.out.println("INVAILD COMMAND");
+                choice = scanner.nextLine().toLowerCase();
+                arrayChoice = choice.split(" ", 2);
+            }
             if (look.contains(arrayChoice[0])) {
                 gameSetup.look(gameSetup.currentLocation, arrayChoice[1]);
-            } else if (go.contains(arrayChoice[0])) {
+            }else if(music.contains(arrayChoice[0])){
+                gameSetup.startBackgroundMusic();
+                System.out.println("Soul Stepper is Soul Stepping");
+
+            }
+            else if (stopMusic.contains(arrayChoice[0])){
+                gameSetup.stopBackgroundMusic();
+                System.out.println("Soul Stepper is no longer Stepping, but he is feeling the love");
+            }
+
+            else if (go.contains(arrayChoice[0])) {
                 gameSetup.go(gameSetup.currentLocation, arrayChoice[1]);
                 if (gameSetup.currentLocation.enemies.size() > 0) {
                     if (gameSetup.currentLocation.enemies.contains(gameSetup.boss)) {
@@ -81,11 +101,11 @@ public class Game {
                         System.out.println();
                     case "map":
                 }
-            } else if (arrayChoice[0].equals("save")){
+            } else if (arrayChoice[0].equals("save")) {
                 String path = "saveGame.json";
 
                 Map<String, Object> map = new HashMap<>();
-                map.put("currentLocation",gameSetup.currentLocation.getName());
+                map.put("currentLocation", gameSetup.currentLocation.getName());
                 map.put("currentHealth", soulStepper.getHealth());
                 map.put("currentInventory", soulStepper.inventory);
 
@@ -98,28 +118,28 @@ public class Game {
                     System.out.println("There was an error saving your game!");
                     e.printStackTrace();
                 }
-            } else if (arrayChoice[0].equals("load")){
+            } else if (arrayChoice[0].equals("load")) {
 
                 try (Reader in = Files.newBufferedReader(Paths.get("saveGame.json"))) {
                     Gson gson = new Gson();
-                    Map<String,Object> map = gson.fromJson(in, Map.class);
+                    Map<String, Object> map = gson.fromJson(in, Map.class);
 
                     String currentLocation = map.get("currentLocation") != null ? (String) map.get("currentLocation") : "Base Circle";
                     Integer health = map.get("currentHeath") != null ? (Integer) map.get("currentLocation") : 100;
                     ArrayList inv = (ArrayList) map.get("currentInventory");
                     gameSetup.currentLocation = gameSetup.ref.get(currentLocation);
                     soulStepper.setHealth(health);
-                    for(Object invItem : inv)
+                    for (Object invItem : inv)
                         soulStepper.addItem((String) invItem);
                     System.out.println("Game Loaded!");
                 } catch (Exception e) {
                     System.out.println("There was an error saving your game!");
                     e.printStackTrace();
                 }
-            }
-            else{
-                    System.out.println("Invalid Command");
-                }
+            } else {
+                System.out.println("Invalid Command");
             }
         }
     }
+
+}
