@@ -1,3 +1,5 @@
+import com.group5.gameSetup.Instruction;
+
 import java.util.Locale;
 import java.util.Scanner;
 

@@ -71,6 +71,7 @@ class Controller {
     }
 
     public void look(Location currentLocation, String direction) {
+
         if (currentLocation.nextLocation.keySet().contains(direction)) {
             System.out.println(currentLocation.nextLocation.get(direction).description);
             System.out.println();
