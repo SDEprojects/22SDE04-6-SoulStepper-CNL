@@ -43,6 +43,10 @@ public abstract class Character {
 
     public abstract int getHealth();
 
+    // character get rewarded for successful combat
+
+    public abstract String getReward();
+
 
 
 

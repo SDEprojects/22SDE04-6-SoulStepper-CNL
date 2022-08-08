@@ -154,6 +154,11 @@ public class Boss extends Character {
         return Math.max(this.health, 0);
     }
 
+    @Override
+    public String getReward() {
+        return null;
+    }
+
     public String getName() {
         return name;
     }
