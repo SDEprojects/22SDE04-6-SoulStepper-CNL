@@ -1,5 +1,6 @@
 package com.group5.character;
 
+import java.io.IOException;
 import java.util.Random;
 
 //Character class is abstract and every character extends Character class
@@ -37,7 +38,7 @@ public abstract class Character {
 
     // dance method for each character.
 
-    public abstract void dance (Character soulStepper, Character enemy) throws InterruptedException;
+    public abstract void dance (Character soulStepper, Character enemy) throws InterruptedException, IOException;
 
     public abstract String getName();
 
