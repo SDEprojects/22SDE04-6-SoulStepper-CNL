@@ -73,6 +73,22 @@ public class BreakDancers extends Character {
         System.out.println();
         System.out.println();
     }
+
+    //enemy taunts player during dance battle
+    @Override
+    public void enemyTaunt() throws InterruptedException{
+        List<String> taunts = new ArrayList<>();
+        taunts.add("You suck at that move");
+        taunts.add("I will show you what great move is");
+        taunts.add("What was that punk?... haha.... you suck");
+        taunts.add("come on loser... take this");
+
+        Random rand = new Random();
+        Integer nextTaunt = rand.nextInt(4);
+        System.out.println(nextTaunt);
+        System.out.println(taunts.get(nextTaunt));
+    }
+
     //Time dialogue after combat of BreakDancer enemy character when engaging in combat with player
     @Override
     public void endingDialogue() throws InterruptedException {
@@ -88,7 +104,7 @@ public class BreakDancers extends Character {
         System.out.println("Tyler: Hahaha no worries man, this was awesome. Do me a favor though...");
         System.out.println();
         TimeUnit.MILLISECONDS.sleep(2000);
-        System.out.println("Soulstepper: What's that?");
+        System.out.println("Soul-stepper: What's that?");
         System.out.println();
         TimeUnit.MILLISECONDS.sleep(2000);
         System.out.println("Tyler: Whoop LoVibe's ass.");
@@ -115,19 +131,21 @@ public class BreakDancers extends Character {
 
 
         if (number == 0) {
+            enemyTaunt();
             System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(0));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 1) {
+            enemyTaunt();
             System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(1));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 2) {
@@ -135,15 +153,16 @@ public class BreakDancers extends Character {
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(2));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 3) {
+            enemyTaunt();
             System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(3));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else {
@@ -156,11 +175,6 @@ public class BreakDancers extends Character {
 
     public int getHealth() {
         return Math.max(this.health, 0);
-    }
-
-    @Override
-    public String getReward() {
-        return null;
     }
 
     public String getName() {
