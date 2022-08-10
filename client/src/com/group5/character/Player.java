@@ -79,6 +79,11 @@ public class Player extends Character {
     }
 
     @Override
+    public void enemyTaunt() throws InterruptedException{
+
+    }
+
+    @Override
     public void endingDialogue() {
 
     }
@@ -246,7 +251,7 @@ public class Player extends Character {
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
                         } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -256,13 +261,13 @@ public class Player extends Character {
                         System.out.println("Soulstepper broke out the Bus Stop!");
                         System.out.println();
                         enemy.decreaseHealth();
-                        System.out.printf("%s got hit by the bus, and there current health is %s !", enemy.getName(), enemy.getHealth());
+                        System.out.printf("%s got hit by the bus, and their current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
                         } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -272,13 +277,13 @@ public class Player extends Character {
                         System.out.println("Soulstepper took it back to the 70's with the Michael Jackson Robot!");
                         System.out.println();
                         enemy.decreaseHealth();
-                        System.out.printf("%s got hit by little Michael's spirit, and there current health is %s !", enemy.getName(), enemy.getHealth());
+                        System.out.printf("%s got hit by little Michael's spirit, and their current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
                         } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -288,13 +293,13 @@ public class Player extends Character {
                         System.out.println("Soulstepper was feeling a little weird and did the Funky Chicken!");
                         System.out.println();
                         enemy.decreaseHealth();
-                        System.out.printf("%s got pecked by the chicken, and there current health is %s !", enemy.getName(), enemy.getHealth());
+                        System.out.printf("%s got pecked by the chicken, and their current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
                         } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -326,6 +331,7 @@ public class Player extends Character {
     public int getHealth() {
         return Math.max(this.health, 0);
     }
+
 
     public String getName() {
         return this.name;

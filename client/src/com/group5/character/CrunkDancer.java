@@ -4,6 +4,7 @@ import com.group5.character.Character;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class CrunkDancer extends Character {
@@ -59,6 +60,21 @@ public class CrunkDancer extends Character {
         System.out.println();
         System.out.println();
     }
+
+    @Override
+    public void enemyTaunt() throws InterruptedException{
+        List<String> taunts = new ArrayList<>();
+        taunts.add("You suck at that move");
+        taunts.add("I will show you what great move is");
+        taunts.add("What was that punk?... haha.... you suck");
+        taunts.add("come on loser... take this");
+
+        Random rand = new Random();
+        Integer nextTaunt = rand.nextInt(4);
+        System.out.println(nextTaunt);
+        System.out.println(taunts.get(nextTaunt));
+    }
+
     //Time dialogue after combat of BreakDancer enemy character when engaging in combat with player
     @Override
     public void endingDialogue() throws InterruptedException {
@@ -95,7 +111,7 @@ public class CrunkDancer extends Character {
 
 //Random selection for Dance moves for combat of the CrunkDancer character
     @Override
-    public void dance(Character soulStepper, Character enemy) {
+    public void dance(Character soulStepper, Character enemy) throws InterruptedException {
         List<String> danceMoves = new ArrayList<>(5);
         danceMoves.add("Kill-off");
         danceMoves.add("Chest Pop");
@@ -110,28 +126,34 @@ public class CrunkDancer extends Character {
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(0));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 1) {
+            enemyTaunt();
+            System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(1));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 2) {
+            enemyTaunt();
+            System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(2));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else if (number == 3) {
+            enemyTaunt();
+            System.out.println();
             System.out.printf("The %s hit you with a %s", getName(), danceMoves.get(3));
             soulStepper.decreaseHealth();
             System.out.println();
-            System.out.printf("Soulsteppers current health is %s", soulStepper.getHealth());
+            System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
             System.out.println();
             System.out.println();
         } else {
@@ -144,6 +166,7 @@ public class CrunkDancer extends Character {
     public int getHealth() {
         return Math.max(this.health, 0);
     }
+
 
     public String getName() {
         return name;
