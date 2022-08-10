@@ -57,7 +57,7 @@ public class Player extends Character {
 
     public int xpAmount(){
         Random r = new Random();
-        int randomNumber = r.ints(1, 0, 11).findFirst().getAsInt();
+        int randomNumber = r.ints(1, 1, 11).findFirst().getAsInt();
 
         return randomNumber;
     }
@@ -74,7 +74,7 @@ public class Player extends Character {
     }
 
     @Override
-    public void beginningDialogue() throws InterruptedException {
+    public void beginningDialogue()  {
 
     }
 
@@ -145,8 +145,9 @@ public class Player extends Character {
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                        }
+                        else {
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -160,8 +161,9 @@ public class Player extends Character {
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                        }
+                        else {
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -175,8 +177,9 @@ public class Player extends Character {
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                        }
+                        else {
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
@@ -191,7 +194,7 @@ public class Player extends Character {
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
                         } else {
-                            System.out.println("You reveived " + xpAmount() + " XP!");
+                            System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
                         }
