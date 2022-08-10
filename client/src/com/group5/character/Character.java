@@ -32,6 +32,12 @@ public abstract class Character {
 
     public abstract void beginningDialogue() throws InterruptedException;
 
+
+    // enemy taunts player during the battle
+    public abstract void enemyTaunt() throws InterruptedException;
+
+
+
     // dialogue the characters will have after the dance battles
 
     public abstract void endingDialogue() throws InterruptedException;
@@ -43,6 +49,7 @@ public abstract class Character {
     public abstract String getName();
 
     public abstract int getHealth();
+
 
 
 
