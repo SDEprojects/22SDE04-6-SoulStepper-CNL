@@ -466,6 +466,7 @@ public class Game {
     ArrayList<String> get = new ArrayList<>(Arrays.asList("get", "acquire", "obtain", "receive", "gain", "grab", "pick up", "take", "pull", "draw"));
     ArrayList<String> use = new ArrayList<>(Arrays.asList("use", "utilize", "operate"));
     ArrayList<String> view = new ArrayList<>(Arrays.asList("check", "current"));
+    ArrayList<String> music = new ArrayList<>(Arrays.asList("stop", "pause", "finish", "terminate", "end", "halt", "conclude"));
 
     public void play() throws InterruptedException, IOException {
 
@@ -503,10 +504,17 @@ public class Game {
                     soulStepper.dance(gameSetup.currentLocation.enemies.get(0), soulStepper);
                     gameSetup.currentLocation.enemies.remove(0);
                 }
-            } else if (quit.contains(arrayChoice[0])) {
+            }
+            else if (quit.contains(arrayChoice[0])) {
                 System.out.println("Thanks for playing Soul Stepper");
                 System.exit(0);
-            } else if (get.contains(arrayChoice[0])) {
+            }
+            else if(music.contains(arrayChoice[0])){
+                System.out.println("You have stopped the music");
+                gameSetup.stopBackgroundMusic();
+            }
+
+            else if (get.contains(arrayChoice[0])) {
                 if (gameSetup.currentLocation.items.contains(arrayChoice[1])) {
                     gameSetup.removeItem(arrayChoice[1]);
                     soulStepper.addItem(arrayChoice[1]);
