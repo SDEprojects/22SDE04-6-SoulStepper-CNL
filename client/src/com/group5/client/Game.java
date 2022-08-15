@@ -68,7 +68,8 @@ public class Game {
                     soulStepper.dance(gameSetup.currentLocation.enemies.get(0), soulStepper);
                     gameSetup.currentLocation.enemies.remove(0);
                 }
-            } else if (quit.contains(arrayChoice[0])) {
+            }
+            else if (quit.contains(arrayChoice[0])) {
                 System.out.println("Thanks for playing Soul Stepper");
                 System.exit(0);
             } else if(music.contains(arrayChoice[0])){

@@ -2,6 +2,7 @@ package com.group5.client;
 
 import com.group5.character.Player;
 import com.group5.gameSetup.GUIGameSetup;
+import com.group5.gameSetup.SoundHandler;
 import com.group5.items.Items;
 
 //import java.awt.*;
@@ -32,7 +33,7 @@ public class GUIGame {
     JLabel titleNameLabel,hpLabel, hpLabelNumber, playerLocationLabel, playerCurrentLocation;
     Font titleFont = new Font("Times New Roman",Font.PLAIN, 70);
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 26);
-    JButton startButton, choice1, choice2, choice3, choice4, choice5;
+    JButton startButton, choice1, choice2, choice3, choice4, choice5, choice6, choice7;
     JButton button1, button2, button3, button4;
     JTextArea mainTextArea;
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -43,6 +44,7 @@ public class GUIGame {
     Items item = new Items();
     String position;
     String buttonSelected;
+    SoundHandler runOrStopMusic = new SoundHandler();
 
 
     public GUIGame() {
@@ -78,7 +80,7 @@ public class GUIGame {
 
     public void createGameScreen() throws InterruptedException {
         position = "game intro";
-
+        runOrStopMusic.startBackgroundMusic();
         titleNamePanel.setVisible(false);
         startButtonPanel.setVisible(false);
 
@@ -150,6 +152,26 @@ public class GUIGame {
         choice5.setFocusPainted(false);
         userChoicePanel.add(choice5);
         choice5.setVisible(false);
+
+        choice6 = new JButton("Play Music");
+        choice6.setBackground(Color.BLACK);
+        choice6.setForeground(Color.WHITE);
+        choice6.setFont(normalFont);
+        choice6.addActionListener(choiceHandler);
+        choice6.setActionCommand("c6");
+        choice6.setFocusPainted(false);
+        userChoicePanel.add(choice6);
+        choice6.setVisible(false);
+
+        choice7 = new JButton("Stop Music");
+        choice7.setBackground(Color.BLACK);
+        choice7.setForeground(Color.WHITE);
+        choice7.setFont(normalFont);
+        choice7.addActionListener(choiceHandler);
+        choice7.setActionCommand("c7");
+        choice7.setFocusPainted(false);
+        userChoicePanel.add(choice7);
+        choice7.setVisible(false);
 
         playerPanel = new JPanel();
         playerPanel.setBounds(100,15,800,50);
@@ -232,9 +254,6 @@ public class GUIGame {
         choice4.removeActionListener(choiceHandler);
         choice4.setText("West");
         choice4.addActionListener(secondChoiceHandler);
-
-        choice5.removeActionListener(choiceHandler);
-        choice5.addActionListener(secondChoiceHandler);
     }
 
     public void showGUIInstructions() throws InterruptedException {
@@ -335,12 +354,17 @@ public class GUIGame {
         choice3.setVisible(true);
         choice4.setVisible(true);
         choice5.setVisible(true);
+        choice6.setVisible(true);
+        choice7.setVisible(true);
 
         choice1.setText("Go");
         choice2.setText("Get");
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void baseCircle() {
@@ -350,6 +374,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void trebleParkWay() {
@@ -359,6 +386,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void thePalace() {
@@ -369,6 +399,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void riffRunway() {
@@ -379,6 +412,8 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
     }
 
     public void wheatLand() {
@@ -389,6 +424,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void seminaryStreet() {
@@ -400,6 +438,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public void bossHouse() {
@@ -409,6 +450,9 @@ public class GUIGame {
         choice3.setText("Use");
         choice4.setText("Look");
         choice5.setText("Quit");
+        choice6.setText("Play Music");
+        choice7.setText("Stop Music");
+
     }
 
     public class TitleScreenHandler implements ActionListener {
@@ -453,6 +497,14 @@ public class GUIGame {
                             setUpDirectionButtons();
                             buttonSelected = "Look";
                             break;
+                        case "c6":
+                            runOrStopMusic.startBackgroundMusic();
+                            buttonSelected = "Play Music";
+                            break;
+                        case  "c7":
+                            runOrStopMusic.stopBackgroundMusic();
+                            buttonSelected = "Stop Music";
+                            break;
                         default:
                             break;
                     }
@@ -474,8 +526,6 @@ public class GUIGame {
                         case "c4":
                             setUpDirectionButtons();
                             buttonSelected = "Look";
-                            break;
-                        default:
                             break;
                     }
                     break;
@@ -563,7 +613,7 @@ public class GUIGame {
                         default:
                             break;
                     }
-                    break;
+
                 case "Look":
                     switch(yourChoice) {
                         case "c1":
@@ -652,6 +702,7 @@ public class GUIGame {
 
         choice5.removeActionListener(secondChoiceHandler);
         choice5.addActionListener(choiceHandler);
+
     }
 
     private void NorthButtonSelected() {

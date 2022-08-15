@@ -9,6 +9,7 @@ public class Client {
         //initiating game class
         Game game = new Game();
         GUIGame gui = new GUIGame();
+        gui.playGUI();
 
         //calling play method from game class.
         //game.play();
