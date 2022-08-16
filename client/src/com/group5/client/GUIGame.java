@@ -8,11 +8,13 @@ import com.group5.items.Items;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.Font;
+import java.util.List;
 
 //import javax.swing.*;
 
@@ -34,33 +36,36 @@ public class GUIGame {
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 26);
     JButton startButton, choice1, choice2, choice3, choice4, choice5;
     JButton button1, button2, button3, button4;
-    JTextArea mainTextArea;
+    JTextArea mainTextArea, mainTextArea2;
     TitleScreenHandler tsHandler = new TitleScreenHandler();
     ChoiceHandler choiceHandler = new ChoiceHandler();
     secondChoiceHandler secondChoiceHandler = new secondChoiceHandler();
+    DanceBattleHandler danceBattleHandler = new DanceBattleHandler();
+    com.group5.character.Character currentEnemy;
     Player soulStepper = new Player("SoulStepper", 100);
     GUIGameSetup guiGameSetup = new GUIGameSetup();
     Items item = new Items();
     String position;
     String buttonSelected;
+    Boolean enemyExist = false;
 
 
     public GUIGame() {
         window = new JFrame();
-        window.setSize(1000,800);
+        window.setSize(1200,800);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.BLACK);
         window.setLayout(null);
         window.setVisible(true);
         con = window.getContentPane();
         titleNamePanel = new JPanel();
-        titleNamePanel.setBounds(100,100,600,150);
+        titleNamePanel.setBounds(100,100,800,200);
         titleNamePanel.setBackground(Color.BLACK);
         titleNameLabel = new JLabel("SOUL STEPPER");
         titleNameLabel.setForeground(Color.WHITE);
         titleNameLabel.setFont(titleFont);
         startButtonPanel = new JPanel();
-        startButtonPanel.setBounds(300,400,200,100);
+        startButtonPanel.setBounds(400,500,200,100);
         startButtonPanel.setBackground(Color.BLACK);
 
         startButton = new JButton("START");
@@ -76,24 +81,33 @@ public class GUIGame {
         con.add(startButtonPanel);
     }
 
-    public void createGameScreen() throws InterruptedException {
+    public void createGameScreen() throws InterruptedException, IOException {
         position = "game intro";
 
         titleNamePanel.setVisible(false);
         startButtonPanel.setVisible(false);
 
         mainTextPanel = new JPanel();
-        mainTextPanel.setBounds(100,100, 800, 350);
+        mainTextPanel.setBounds(100,200, 800, 350);
         mainTextPanel.setBackground(Color.BLACK);
         con.add(mainTextPanel);
 
         mainTextArea = new JTextArea("WELCOME TO SOUL STEPPER");
-        mainTextArea.setBounds(110,100,600,330);
+        mainTextArea.setBounds(110,100,800,330);
         mainTextArea.setBackground(Color.BLACK);
         mainTextArea.setForeground(Color.WHITE);
         mainTextArea.setFont(normalFont);
         mainTextArea.setLineWrap(true);
         mainTextPanel.add(mainTextArea);
+
+        mainTextArea2 = new JTextArea("");
+        mainTextArea2.setBounds(110,300,800,330);
+        mainTextArea2.setBackground(Color.BLACK);
+        mainTextArea2.setForeground(Color.WHITE);
+        mainTextArea2.setFont(normalFont);
+        mainTextArea2.setLineWrap(true);
+        mainTextPanel.add(mainTextArea2);
+
 
         userChoicePanel = new JPanel();
         userChoicePanel.setBounds(250, 450, 500, 250);
@@ -105,7 +119,8 @@ public class GUIGame {
         choice1.setBackground(Color.BLACK);
         choice1.setForeground(Color.WHITE);
         choice1.setFont(normalFont);
-        choice1.addActionListener(choiceHandler);
+        choice1.addActionListener(new ChoiceHandler());
+        choice1.removeActionListener(new ChoiceHandler());
         choice1.setActionCommand("c1");
         choice1.setFocusPainted(false);
         userChoicePanel.add(choice1);
@@ -115,7 +130,7 @@ public class GUIGame {
         choice2.setBackground(Color.BLACK);
         choice2.setForeground(Color.WHITE);
         choice2.setFont(normalFont);
-        choice2.addActionListener(choiceHandler);
+        choice2.addActionListener(new ChoiceHandler());
         choice2.setActionCommand("c2");
         choice2.setFocusPainted(false);
         userChoicePanel.add(choice2);
@@ -125,7 +140,7 @@ public class GUIGame {
         choice3.setBackground(Color.BLACK);
         choice3.setForeground(Color.WHITE);
         choice3.setFont(normalFont);
-        choice3.addActionListener(choiceHandler);
+        choice3.addActionListener(new ChoiceHandler());
         choice3.setActionCommand("c3");
         choice3.setFocusPainted(false);
         userChoicePanel.add(choice3);
@@ -135,7 +150,7 @@ public class GUIGame {
         choice4.setBackground(Color.BLACK);
         choice4.setForeground(Color.WHITE);
         choice4.setFont(normalFont);
-        choice4.addActionListener(choiceHandler);
+        choice4.addActionListener(new ChoiceHandler());
         choice4.setActionCommand("c4");
         choice4.setFocusPainted(false);
         userChoicePanel.add(choice4);
@@ -145,7 +160,7 @@ public class GUIGame {
         choice5.setBackground(Color.BLACK);
         choice5.setForeground(Color.WHITE);
         choice5.setFont(normalFont);
-        choice5.addActionListener(choiceHandler);
+        choice5.addActionListener(new ChoiceHandler());
         choice5.setActionCommand("c5");
         choice5.setFocusPainted(false);
         userChoicePanel.add(choice5);
@@ -176,65 +191,18 @@ public class GUIGame {
         playerCurrentLocation.setFont(normalFont);
         playerCurrentLocation.setForeground(Color.WHITE);
         playerPanel.add(playerCurrentLocation);
-        showGUIInstructions();
+
+        //showGUIInstructions();
+        playerSetup();
     }
 
-    public void playerSetup() throws InterruptedException {
+    //-----GAME SETUP METHODS----------//
+    public void playerSetup() throws InterruptedException, IOException {
         String previousLocation = "Main Street";
         int playerHP = soulStepper.getHealth();
         playerCurrentLocation.setText(guiGameSetup.currentLocation.getName());
         hpLabelNumber.setText("" + playerHP);
         displayCurrentLocationInfo();
-    }
-
-    private void displayCurrentLocationInfo() {
-        switch(guiGameSetup.currentLocation.getName().toLowerCase()) {
-            case "main street":
-                displayMainStreet();
-                break;
-            case "base circle":
-                baseCircle();
-                break;
-            case "treble parkway":
-                trebleParkWay();
-                break;
-            case "riff runway":
-                riffRunway();
-                break;
-            case "the palace":
-                thePalace();
-                break;
-            case "wheat land":
-                wheatLand();
-                break;
-            case "seminary street":
-                seminaryStreet();
-                break;
-            case "boss house":
-                bossHouse();
-                break;
-        }
-    }
-
-    public void setUpDirectionButtons() {
-        choice1.removeActionListener(choiceHandler);
-        choice1.setText("North");
-        choice1.addActionListener(secondChoiceHandler);
-
-        choice2.removeActionListener(choiceHandler);
-        choice2.setText("South");
-        choice2.addActionListener(secondChoiceHandler);
-
-        choice3.removeActionListener(choiceHandler);
-        choice3.setText("East");
-        choice3.addActionListener(secondChoiceHandler);
-
-        choice4.removeActionListener(choiceHandler);
-        choice4.setText("West");
-        choice4.addActionListener(secondChoiceHandler);
-
-        choice5.removeActionListener(choiceHandler);
-        choice5.addActionListener(secondChoiceHandler);
     }
 
     public void showGUIInstructions() throws InterruptedException {
@@ -318,7 +286,7 @@ public class GUIGame {
         Timer timer11 = new Timer(delay11, e -> {
             try {
                 playerSetup();
-            } catch (InterruptedException ex) {
+            } catch (InterruptedException | IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -326,96 +294,299 @@ public class GUIGame {
         timer11.start();
     }
 
-    //---LOCATIONS-----//
-    public void displayMainStreet() {
-        position = "Main Street";
+    //-------------------DISPLAY LOCATION INFO------------------//
+    private void displayCurrentLocationInfo() throws IOException, InterruptedException {
+        mainTextArea.setVisible(true);
+        mainTextArea2.setText("");
+
+        choice1.setEnabled(true);
+        choice2.setEnabled(true);
+        choice3.setEnabled(true);
+        choice4.setEnabled(true);
+        choice5.setEnabled(true);
+
+        switch(guiGameSetup.currentLocation.getName().toLowerCase()) {
+            case "main street":
+                displayMainStreet();
+                break;
+            case "base circle":
+                baseCircle();
+                break;
+            case "treble parkway":
+                trebleParkWay();
+                break;
+            case "riff runway":
+                riffRunway();
+                break;
+            case "the palace":
+                thePalace();
+                break;
+            case "wheat land":
+                wheatLand();
+                break;
+            case "seminary street":
+                seminaryStreet();
+                break;
+            case "boss house":
+                bossHouse();
+                break;
+        }
+    }
+
+    //-----------ENEMY FIGHT LOGIC---------------//
+    private void checkIfEnemyExists() throws IOException, InterruptedException {
+        if(guiGameSetup.currentLocation.enemies.size() > 0) {
+            enemyExist = true;
+
+                removeActionListeners();
+                setupDanceBattleButtons();
+                currentEnemy = guiGameSetup.currentLocation.enemies.get(0);
+                displayDanceBattleIntro();
+                guiGameSetup.currentLocation.enemies.remove(0);
+//            removeActionListeners();
+//            setupDanceBattleButtons();
+//            currentEnemy = guiGameSetup.currentLocation.enemies.get(0);
+//            displayDanceBattleIntro();
+//            guiGameSetup.currentLocation.enemies.remove(0);
+        } else {
+            removeActionListeners();
+            setUpMainCommandButtons();
+        }
+    }
+
+    private void displayDanceBattleIntro() {
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+
+        int delay = 3000;
+        mainTextArea.setText("YOU ENCOUNTERED " + currentEnemy.getName()+"!");
+        mainTextArea2.setText("DANCE BATTLE INITIATED!");
+        mainTextArea2.setVisible(true);
+        Timer timer = new Timer(delay, e -> {
+            try {
+                danceGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void displayEnemyEndingDialogue(ArrayList<String> enemyDialogue) {
+    }
+
+    private void danceGUI() throws IOException, InterruptedException {
+        int delay = 300;
+        int delay2 = 2000;
+
+
+        Timer timer = new Timer(delay, e -> {
+            choice1.setEnabled(true);
+            choice2.setEnabled(true);
+            choice3.setEnabled(true);
+            choice4.setEnabled(true);
+            choice5.setEnabled(true);
+            if(currentEnemy.getHealth() > 0) {
+                mainTextArea.setText("");
+                if(soulStepper.getHealth() > 0) {
+                    mainTextArea2.setVisible(true);
+                    mainTextArea2.setText("" +
+                            "Pick a number to select a dance move:\n" +
+                            "            1. The Hustle\n" +
+                            "            2. Bus Stop\n" +
+                            "            3. Michael Jackson Robot\n" +
+                            "            4. Funky Chicken");
+                } else {
+
+                    mainTextArea.setText("Soul-Stepper was defeated!");
+                    mainTextArea2.setVisible(false);
+                    Timer timer2 = new Timer(delay2, e2 -> {
+                        quitButtonSelected();
+                    });
+                    timer2.setRepeats(false);
+                    timer2.start();
+                }
+            } else {
+                removeActionListeners();
+                setUpMainCommandButtons();
+                mainTextArea2.setText("");
+                try {
+                    displayCurrentLocationInfo();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void enemyDanceGUI() {
+
+        Random random = new Random();
+        int number = random.nextInt(4) + 2;
+        int delay = 3000;
+        int delay2 = 5400;
+
+        List<String> danceMoves = new ArrayList<>(5);
+        danceMoves.add("Kill-off");
+        danceMoves.add("Chest Pop");
+        danceMoves.add("Jab");
+        danceMoves.add("Buck");
+        danceMoves.add("Get-off");
+
+        Timer timer = new Timer(delay, e -> {
+
+            if (number == 0) {
+                mainTextArea.setText("The " + currentEnemy.getName() + " hit you with a " + danceMoves.get(0));
+                soulStepper.decreaseHealth();
+                hpLabelNumber.setText("" +soulStepper.getHealth());
+                mainTextArea2.setVisible(false);
+            } else if (number == 1) {
+                // enemyTaunt();
+                System.out.println();
+                mainTextArea.setText("The " + currentEnemy.getName() + " hit you with a " + danceMoves.get(1));
+                soulStepper.decreaseHealth();
+                hpLabelNumber.setText("" +soulStepper.getHealth());
+                mainTextArea2.setVisible(false);
+            } else if (number == 2) {
+                //enemyTaunt();;
+                mainTextArea.setText("The " + currentEnemy.getName() + " hit you with a " + danceMoves.get(2));
+                soulStepper.decreaseHealth();
+                hpLabelNumber.setText("" +soulStepper.getHealth());
+                System.out.printf("Soul-steppers current health is %s", soulStepper.getHealth());
+                mainTextArea2.setVisible(false);
+            } else if (number == 3) {
+                //enemyTaunt();
+                mainTextArea.setText("The " + currentEnemy.getName() + " hit you with a " + danceMoves.get(3));
+                soulStepper.decreaseHealth();
+                hpLabelNumber.setText("" +soulStepper.getHealth());
+                mainTextArea2.setVisible(false);
+            } else {
+                mainTextArea2.setText("The " + currentEnemy.getName() + " tried hit you with a move but missed!");
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        Timer timer2 = new Timer(delay2, e -> {
+            try {
+                danceGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
+        timer2.setRepeats(false);
+        timer2.start();
+
+
+    }
+
+    //-------------------LOCATIONS------------------//
+    public void displayMainStreet() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You are on Main Street");
-        choice1.setVisible(true);
-        choice2.setVisible(true);
-        choice3.setVisible(true);
-        choice4.setVisible(true);
-        choice5.setVisible(true);
+        mainTextArea.setVisible(true);
 
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void baseCircle() {
+    public void baseCircle() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You on Base Circle");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void trebleParkWay() {
+    public void trebleParkWay() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You are on Treble Parkway");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void thePalace() {
-        position = "cross road";
+    public void thePalace() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You are in the Palace");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void riffRunway() {
-        position = "cross road";
+    public void riffRunway() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You are on Riff Runway");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void wheatLand() {
-        position = "cross road";
+    public void wheatLand() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("You are on Wheat Land");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void seminaryStreet() {
-        position = "cross road";
+    public void seminaryStreet() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
         mainTextArea.setText("");
         mainTextArea.setText("You are on Seminary Street");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
     }
 
-    public void bossHouse() {
-        mainTextArea.setText("Soul Stepper....You dare show your face...haha..");
-        choice1.setText("Go");
-        choice2.setText("Get");
-        choice3.setText("Use");
-        choice4.setText("Look");
-        choice5.setText("Quit");
+    public void bossHouse() throws IOException, InterruptedException {
+        removeActionListeners();
+        setUpMainCommandButtons();
+
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            mainTextArea2.setText(guiGameSetup.currentLocation.items.toString());
+            mainTextArea2.setVisible(true);
+        }
+        quitButtonSelected();
     }
 
+    //-----------HANDLER METHODS---------------//
     public class TitleScreenHandler implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             try {
                 createGameScreen();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -438,20 +609,28 @@ public class GUIGame {
                 case "the palace":
                     switch(yourChoice) {
                         case "c1":
+                            goButtonSelected();
+                            removeActionListeners();
                             setUpDirectionButtons();
-                            buttonSelected = "Go";
                             break;
                         case "c2":
+                            removeActionListeners();
                             getButtonSelected();
-                            buttonSelected = "Get";
+                            setupGetButtons();
+
                             break;
                         case "c3":
                             useButtonSelected();
-                            buttonSelected = "Use";
+                            removeActionListeners();
+                            setUpUseButtons();
                             break;
                         case "c4":
-                            setUpDirectionButtons();
+                            removeActionListeners();
                             buttonSelected = "Look";
+                            setUpDirectionButtons();
+                            break;
+                        case "c5":
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -460,20 +639,23 @@ public class GUIGame {
                 case "boss house":
                     switch(yourChoice) {
                         case "c1":
+                            removeActionListeners();
                             setUpDirectionButtons();
-                            buttonSelected = "Go";
                             break;
                         case "c2":
-                            getButtonSelected();
-                            buttonSelected = "Get";
+                            removeActionListeners();
+                            setupGetButtons();
                             break;
                         case "c3":
+                            removeActionListeners();
                             useButtonSelected();
-                            buttonSelected = "Use";
                             break;
                         case "c4":
+                            removeActionListeners();
                             setUpDirectionButtons();
-                            buttonSelected = "Look";
+                            break;
+                        case "c5":
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -495,27 +677,51 @@ public class GUIGame {
                         case "c1":
                             System.out.println(choice1.getText());
                             guiGameSetup.go(guiGameSetup.currentLocation, choice1.getText().toLowerCase());
-                            executeGoResults();
-                            NorthButtonSelected();
+                            removeActionListeners();
+                            try {
+                                executeGoResults();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c2":
                             guiGameSetup.go(guiGameSetup.currentLocation, choice2.getText().toLowerCase());
-                            executeGoResults();
-                            SouthButtonSelected();
+                            removeActionListeners();
+                            try {
+                                executeGoResults();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c3":
                             guiGameSetup.go(guiGameSetup.currentLocation, choice3.getText().toLowerCase());
-                            executeGoResults();
-                            EastButtonSelected();
+                            removeActionListeners();
+                            try {
+                                executeGoResults();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c4":
                             guiGameSetup.go(guiGameSetup.currentLocation, choice4.getText().toLowerCase());
-                            executeGoResults();
-                            WestButtonSelected();
+                            removeActionListeners();
+                            try {
+                                executeGoResults();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c5":
-                            QuitButtonSelected();
-                            //Quit Game
+                            removeActionListeners();
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -524,19 +730,20 @@ public class GUIGame {
                 case "Get":
                     switch(yourChoice) {
                         case "c1":
-                            // goButtonSelected();
+                            executeGetResults(choice1.getText());
                             break;
                         case "c2":
-                            //getButtonSelected();
+                            executeGetResults(choice2.getText());
+                            getButtonSelected();
                             break;
                         case "c3":
-                            // useButtonSelected();
+                            executeGetResults(choice3.getText());
                             break;
                         case "c4":
-                            // lookButtonSelected();
+                            executeGetResults(choice4.getText());
                             break;
                         case "c5":
-                            // guitButtonSelected();
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -545,20 +752,27 @@ public class GUIGame {
                 case "Use":
                     switch(yourChoice) {
                         case "c1":
-                            //goButtonSelected();
+                            try {
+                                executeUseResult(choice1.getText());
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c2":
-                            // getButtonSelected();
+                            try {
+                                executeUseResult(choice1.getText());
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case "c3":
-                            //useButtonSelected();
+
                             break;
                         case "c4":
                             // lookButtonSelected();
                             break;
                         case "c5":
-                            // guitButtonSelected();
-                            //Quit Game
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -569,25 +783,21 @@ public class GUIGame {
                         case "c1":
                             guiGameSetup.look(guiGameSetup.currentLocation, choice1.getText().toLowerCase());
                             executeLookResults();
-                            NorthButtonSelected();
                             break;
                         case "c2":
-                            guiGameSetup.look(guiGameSetup.currentLocation, choice3.getText().toLowerCase());
+                            guiGameSetup.look(guiGameSetup.currentLocation, choice2.getText().toLowerCase());
                             executeLookResults();
-                            SouthButtonSelected();
                             break;
                         case "c3":
                             guiGameSetup.look(guiGameSetup.currentLocation, choice3.getText().toLowerCase());
                             executeLookResults();
-                            EastButtonSelected();
                             break;
                         case "c4":
                             guiGameSetup.look(guiGameSetup.currentLocation, choice4.getText().toLowerCase());
                             executeLookResults();
-                            WestButtonSelected();
                             break;
                         case "c5":
-                            QuitButtonSelected();
+                            quitButtonSelected();
                             break;
                         default:
                             break;
@@ -595,6 +805,490 @@ public class GUIGame {
                     break;
             }
         }
+    }
+
+    public class DanceBattleHandler implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+
+            String yourChoice = event.getActionCommand();
+            System.out.println(yourChoice);
+
+            switch(yourChoice) {
+                case "c1":
+                    try {
+                        displayHustleResults();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "c2":
+                    try {
+                        displayBusStopResults();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "c3":
+                    try {
+                        displayRobotResults();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "c4":
+                    try {
+                        displayFunkyChickenResults();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "c5":
+                    removeActionListeners();
+                    quitButtonSelected();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    //--------------DANCE MOVES------------//
+    private void displayBusStopResults() throws IOException, InterruptedException {
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+        choice5.setEnabled(false);
+
+        int delay = 2700;
+
+        System.out.println(choice1.getText());
+        mainTextArea.setText("Soul-stepper broke out the Bus Stop!");
+        mainTextArea2.setVisible(false);
+            Timer timer = new Timer(delay, e -> {
+                currentEnemy.decreaseHealth();
+                mainTextArea2.setText(currentEnemy.getName() + " got hit by the bus, and there current health is " + currentEnemy.getHealth() + "!");
+                mainTextArea2.setVisible(true);
+                if (currentEnemy.getHealth() > 0) {
+                    Timer timer2 = new Timer(delay, e2 -> {
+                        enemyDanceGUI();
+                    });
+                    timer2.setRepeats(false);
+                    timer2.start();
+                }else {
+                    Timer timer2 = new Timer(delay, e2 -> {
+                        System.out.println("Enemey defeated..");
+                        displayEnemyDefeatedInfo();
+                    });
+                    timer2.setRepeats(false);
+                    timer2.start();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+    }
+
+    private void displayHustleResults() throws IOException, InterruptedException {
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+
+        int delay = 2700;
+
+
+        System.out.println(choice1.getText());
+        mainTextArea.setText("Soul-stepper hit em with the Hustle!");
+        mainTextArea2.setVisible(false);
+        Timer timer = new Timer(delay, e -> {
+            currentEnemy.decreaseHealth();
+            mainTextArea2.setText(currentEnemy.getName() + " got hit by the bus, and there current health is " + currentEnemy.getHealth() + "!");
+            mainTextArea2.setVisible(true);
+            if (currentEnemy.getHealth() > 0) {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    enemyDanceGUI();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }else {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    System.out.println("Enemey defeated..");
+                    displayEnemyDefeatedInfo();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void displayRobotResults() throws IOException, InterruptedException {
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+
+        int delay = 2700;
+
+        System.out.println(choice1.getText());
+        mainTextArea.setText("Soul-stepper took it back to the 70's with the Michael Jackson Robot!");
+        mainTextArea2.setVisible(false);
+        Timer timer = new Timer(delay, e -> {
+            currentEnemy.decreaseHealth();
+            mainTextArea2.setText(currentEnemy.getName() + " got hit by the bus, and there current health is " + currentEnemy.getHealth() + "!");
+            mainTextArea2.setVisible(true);
+            if (currentEnemy.getHealth() > 0) {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    enemyDanceGUI();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }else {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    System.out.println("Enemey defeated..");
+                    displayEnemyDefeatedInfo();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void displayFunkyChickenResults() throws IOException, InterruptedException {
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+
+        int delay = 2700;
+
+        System.out.println(choice1.getText());
+        mainTextArea.setText("Soul-stepper was feeling a little weird and did the Funky Chicken!");
+        mainTextArea2.setVisible(false);
+        Timer timer = new Timer(delay, e -> {
+            currentEnemy.decreaseHealth();
+            mainTextArea2.setText(currentEnemy.getName() + " got hit by the bus, and there current health is " + currentEnemy.getHealth() + "!");
+            mainTextArea2.setVisible(true);
+            if (currentEnemy.getHealth() > 0) {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    enemyDanceGUI();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }else {
+                Timer timer2 = new Timer(delay, e2 -> {
+                    System.out.println("Enemey defeated..");
+                    displayEnemyDefeatedInfo();
+                });
+                timer2.setRepeats(false);
+                timer2.start();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    private void displayEnemyDefeatedInfo() {
+        int delay = 2300;
+        int delay2 = 3960;
+
+        mainTextArea.setText("You defeated " + currentEnemy.getName());
+        mainTextArea2.setVisible(false);
+        enemyExist = false;
+        currentEnemy = null;
+
+        Timer timer = new Timer(delay, e -> {
+            mainTextArea.setText("You received " + soulStepper.xpAmount() + " XP!");
+            mainTextArea2.setVisible(true);
+
+        });
+        timer.setRepeats(false);
+        timer.start();
+        Timer timer2 = new Timer(delay2, e2 -> {
+            try {
+                System.out.println("display firing from defeat info..");
+                displayCurrentLocationInfo();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        timer2.setRepeats(false);
+        timer2.start();
+    }
+
+    //-----------BUTTON SETUP METHODS---------------//
+    private void setupGetButtons() {
+        if (guiGameSetup.currentLocation.items.size() > 0) {
+            ArrayList<JButton> buttons = new ArrayList<>(5);
+            buttons.add(choice1);
+            buttons.add(choice2);
+            buttons.add(choice3);
+            buttons.add(choice4);
+            buttons.add(choice5);
+
+            for (int i = 0; i < guiGameSetup.currentLocation.items.size(); i++) {
+                buttons.get(i).setText(guiGameSetup.currentLocation.items.get(i));
+                buttons.get(i).addActionListener(new secondChoiceHandler());
+            }
+
+            choice2.setVisible(false);
+            choice3.setVisible(false);
+            choice4.setVisible(false);
+            choice5.setVisible(false);
+        }
+        else {
+            mainTextArea.setText("No items in this room");
+            mainTextArea.setVisible(true);
+            mainTextArea2.setVisible(false);
+            setUpMainCommandButtons();
+        }
+    }
+
+    private void setUpMainCommandButtons() {
+        buttonSelected = "";
+        choice1.setText("Go");
+        choice1.addActionListener(new ChoiceHandler());
+        choice1.setVisible(true);
+        choice1.setEnabled(true);
+
+        choice2.setText("Get");
+        choice2.addActionListener(new ChoiceHandler());
+        choice2.setVisible(true);
+        choice2.setEnabled(true);
+
+        choice3.setText("Use");
+        choice3.addActionListener(new ChoiceHandler());
+        choice3.setVisible(true);
+        choice3.setEnabled(true);
+
+        choice4.setText("Look");
+        choice4.addActionListener(new ChoiceHandler());
+        choice4.setVisible(true);
+
+        choice5.addActionListener(new ChoiceHandler());
+        choice5.setVisible(true);
+        choice5.setEnabled(true);
+    }
+
+    public void setUpDirectionButtons() {
+        choice1.setText("North");
+        choice1.addActionListener(secondChoiceHandler);
+
+        choice2.setText("South");
+        choice2.addActionListener(secondChoiceHandler);
+
+        choice3.setText("East");
+        choice3.addActionListener(new secondChoiceHandler());
+
+        choice4.setText("West");
+        choice4.addActionListener(secondChoiceHandler);
+
+        choice5.addActionListener(secondChoiceHandler);
+        mainTextArea2.setVisible(false);
+    }
+
+    private void setUpUseButtons() {
+        if (soulStepper.inventory.size() > 0) {
+            ArrayList<JButton> buttons = new ArrayList<>(5);
+            buttons.add(choice1);
+            buttons.add(choice2);
+            buttons.add(choice3);
+            buttons.add(choice4);
+            buttons.add(choice5);
+            for (int i = 0; i < soulStepper.inventory.size(); i++) {
+                buttons.get(i).setText(soulStepper.inventory.get(i));
+                buttons.get(i).addActionListener(new secondChoiceHandler());
+            }
+            choice2.setVisible(false);
+            choice3.setVisible(false);
+            choice4.setVisible(false);
+            choice5.setVisible(false);
+        }
+        else {
+            mainTextArea2.setText("No items in inventory to be used");
+            mainTextArea2.setVisible(true);
+            setUpMainCommandButtons();
+        }
+
+
+    }
+
+    private void setupDanceBattleButtons() {
+        choice1.setText("Hustle");
+        choice1.addActionListener(danceBattleHandler);
+
+        choice2.setText("Bus Stop");
+        choice2.addActionListener(danceBattleHandler);
+
+        choice3.setText("Michael Jackson Robot");
+        choice3.addActionListener(danceBattleHandler);
+
+        choice4.setText("Funky Chicken");
+        choice4.addActionListener(danceBattleHandler);
+
+        choice5.addActionListener(danceBattleHandler);
+        mainTextArea2.setVisible(false);
+    }
+
+
+    //-----------REMOVE ACTION LISTENERS METHOD---------------//
+    public void removeActionListeners() {
+
+        ArrayList<JButton> buttons = new ArrayList<>(5);
+        buttons.add(choice1);
+        buttons.add(choice2);
+        buttons.add(choice3);
+        buttons.add(choice4);
+        buttons.add(choice5);
+
+        for(int i = 0; i < buttons.size();i++) {
+            System.out.println("Current Button: " + buttons.get(i).getText());
+            for(ActionListener al : buttons.get(i).getActionListeners()) {
+                System.out.println("Before: " + al);
+                buttons.get(i).removeActionListener(al);
+            }
+        }
+
+        for(int i = 0; i < buttons.size();i++) {
+            System.out.println("Current Button: " + buttons.get(i).getText());
+            for(ActionListener al : buttons.get(i).getActionListeners()) {
+                System.out.println("After: " + al);
+            }
+        }
+    }
+
+    //-----------EXECUTE RESULTS METHODS---------------//
+    private void executeGoResults() throws IOException, InterruptedException {
+        System.out.println("execute Results firing...");
+        System.out.println(guiGameSetup.previousLocation.getName());
+        System.out.println(guiGameSetup.currentLocation.getName());
+        if(guiGameSetup.previousLocation.getName().equals(guiGameSetup.currentLocation.getName())) {
+            mainTextArea.setText("");
+            mainTextArea.setText("you can't go that way. Select Different Direction");
+            setUpMainCommandButtons();
+        } else {
+            choice1.setEnabled(false);
+            choice2.setEnabled(false);
+            choice3.setEnabled(false);
+            choice4.setEnabled(false);
+            choice5.setEnabled(false);
+
+            playerCurrentLocation.setText(guiGameSetup.currentLocation.getName());
+            guiGameSetup.previousLocation = guiGameSetup.currentLocation;
+            checkIfEnemyExists();
+            if(enemyExist == false) {
+                removeActionListeners();
+                setUpMainCommandButtons();
+                displayCurrentLocationInfo();
+            }
+        }
+    }
+
+    private void executeGetResults(String item) {
+        if (guiGameSetup.currentLocation.items.contains(item)) {
+            guiGameSetup.removeItem(item);
+            soulStepper.addItem(item);
+            mainTextArea2.setText("You picked up: " + item);
+            mainTextArea2.setVisible(true);
+            removeActionListeners();
+            setUpMainCommandButtons();
+        } else {
+            mainTextArea2.setText("You can't do that");
+            mainTextArea2.setVisible(true);
+            removeActionListeners();
+            setUpMainCommandButtons();
+        }
+    }
+
+    private void executeLookResults() {
+        int delay = 2200;
+        int delay2 = 1400;
+
+        choice1.setEnabled(false);
+        choice2.setEnabled(false);
+        choice3.setEnabled(false);
+        choice4.setEnabled(false);
+
+        System.out.println("execute Results firing...");
+        if(guiGameSetup.validLookedAtDirection ==  false) {
+            mainTextArea.setText("");
+            mainTextArea.setText("There's nothing of interest there.");
+
+            Timer timer = new Timer(delay2, e -> {
+                try {
+                    removeActionListeners();
+                    setUpMainCommandButtons();
+                    displayCurrentLocationInfo();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        } else {
+            mainTextArea.setText("");
+            mainTextArea.setText(guiGameSetup.lookedAtLocation);
+            guiGameSetup.validLookedAtDirection = false;
+
+            Timer timer = new Timer(delay, e -> {
+                try {
+                    removeActionListeners();
+                    setUpMainCommandButtons();
+                    displayCurrentLocationInfo();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+
+    private void executeUseResult(String playerItem) throws InterruptedException {
+        int delay = 1700;
+
+        System.out.println("execute Results firing ...");
+        if (playerItem.equals("health kit")){
+            soulStepper.useHealthKit();
+            soulStepper.inventory.remove(playerItem);
+            hpLabelNumber.setText("" + soulStepper.getHealth());
+            mainTextArea2.setText("You used: " + playerItem);
+            mainTextArea2.setVisible(true);
+            removeActionListeners();
+            setUpMainCommandButtons();
+        }
+        else if (playerItem.equals("mj jacket")) {
+            soulStepper.setHealth(300);
+            soulStepper.inventory.remove(playerItem);
+            hpLabelNumber.setText("" + soulStepper.getHealth());
+            mainTextArea2.setText("You have increased your power level over 10000");
+            mainTextArea2.setVisible(true);
+        }
+        else {
+            mainTextArea.setText("There is no item to be used");
+            mainTextArea.setVisible(true);
+            mainTextArea2.setVisible(false);
+        }
+        Timer timer = new Timer(delay, e -> {
+            removeActionListeners();
+            setUpMainCommandButtons();
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    //-----------BUTTON SELECTED METHODS---------------//
+    private void goButtonSelected() {
+        buttonSelected = "Go";
     }
 
     private void getButtonSelected() {
@@ -605,81 +1299,16 @@ public class GUIGame {
         buttonSelected = "Use";
     }
 
-    private void executeGoResults() {
-        System.out.println("execute Results firing...");
-        System.out.println(guiGameSetup.previousLocation.getName());
-        System.out.println(guiGameSetup.currentLocation.getName());
-        if(guiGameSetup.previousLocation.getName().equals(guiGameSetup.currentLocation.getName())) {
-            mainTextArea.setText("");
-            mainTextArea.setText("you can't go that way. Select Different Direction");
-        } else {
-            playerCurrentLocation.setText(guiGameSetup.currentLocation.getName());
-            guiGameSetup.previousLocation = guiGameSetup.currentLocation;
-            displayCurrentLocationInfo();
-            setUpMainCommandButtons();
-        }
-    }
+    private void quitButtonSelected() {
+        int delay = 2000;
+            mainTextArea.setText("Thanks for Playing Soul Stepper!");
+            mainTextArea2.setVisible(false);
 
-    private void executeLookResults() {
-        System.out.println("execute Results firing...");
-        if(guiGameSetup.validLookedAtDirection ==  false) {
-            mainTextArea.setText("");
-            mainTextArea.setText("There's nothing of interest there.");
-        } else {
-            mainTextArea.setText("");
-            mainTextArea.setText(guiGameSetup.lookedAtLocation);
-            //displayCurrentLocationInfo();
-            setUpMainCommandButtons();
-        }
-    }
-
-    private void setUpMainCommandButtons() {
-        choice1.removeActionListener(secondChoiceHandler);
-        choice1.setText("Go");
-        choice1.addActionListener(choiceHandler);
-
-        choice2.removeActionListener(secondChoiceHandler);
-        choice2.setText("Get");
-        choice2.addActionListener(choiceHandler);
-
-        choice3.removeActionListener(secondChoiceHandler);
-        choice3.setText("Use");
-        choice3.addActionListener(choiceHandler);
-
-        choice4.removeActionListener(secondChoiceHandler);
-        choice4.setText("Look");
-        choice4.addActionListener(choiceHandler);
-
-        choice5.removeActionListener(secondChoiceHandler);
-        choice5.addActionListener(choiceHandler);
-    }
-
-    private void NorthButtonSelected() {
-    }
-
-    private void SouthButtonSelected() {
-    }
-
-    private void EastButtonSelected() {
-    }
-
-    private void WestButtonSelected() {
-    }
-
-    private void QuitButtonSelected() {
-    }
-
-    public void attackGuard() {
-        position = "attackGuard";
-        mainTextArea.setText("Guard: Dont be stupid");
-        int playerHP = soulStepper.getHealth();
-
-        soulStepper.decreaseHealth();
-        hpLabelNumber.setText("" + playerHP);
-        choice1.setText("Funky Chicken");
-        choice2.setText("Look");
-        choice3.setText("Use");
-        choice4.setText("Quit");
+        Timer timer = new Timer(delay, e -> {
+            System.exit(0);
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public void playGUI() throws InterruptedException {

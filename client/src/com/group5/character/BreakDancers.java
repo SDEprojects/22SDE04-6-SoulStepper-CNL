@@ -74,6 +74,11 @@ public class BreakDancers extends Character {
         System.out.println();
     }
 
+    @Override
+    public ArrayList<String> beginningDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
     //enemy taunts player during dance battle
     @Override
     public void enemyTaunt() throws InterruptedException{
@@ -117,7 +122,12 @@ public class BreakDancers extends Character {
         System.out.println();
     }
 
-//Random selection for Dance moves for combat of the BreakDancer character
+    @Override
+    public ArrayList<String> endingDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
+    //Random selection for Dance moves for combat of the BreakDancer character
     @Override
     public void dance(Character soulStepper, Character enemy) throws InterruptedException {
         List<String> danceMoves = new ArrayList<>(5);
