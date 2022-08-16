@@ -893,6 +893,7 @@ public class GUIGame {
         choice2.setEnabled(false);
         choice3.setEnabled(false);
         choice4.setEnabled(false);
+        choice5.setEnabled(false);
 
         int delay = 2700;
 
@@ -928,6 +929,7 @@ public class GUIGame {
         choice2.setEnabled(false);
         choice3.setEnabled(false);
         choice4.setEnabled(false);
+        choice5.setEnabled(false);
 
         int delay = 2700;
 
@@ -962,6 +964,7 @@ public class GUIGame {
         choice2.setEnabled(false);
         choice3.setEnabled(false);
         choice4.setEnabled(false);
+        choice5.setEnabled(false);
 
         int delay = 2700;
 
