@@ -71,6 +71,11 @@ public class SwingDancer extends Character {
     }
 
     @Override
+    public ArrayList<String> beginningDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
+    @Override
     public void enemyTaunt() throws InterruptedException{
         List<String> taunts = new ArrayList<>();
         taunts.add("You suck at that move");
@@ -112,7 +117,12 @@ public class SwingDancer extends Character {
         System.out.println();
     }
 
-//Random selection for Dance moves for combat of the SwingDancer character
+    @Override
+    public ArrayList<String> endingDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
+    //Random selection for Dance moves for combat of the SwingDancer character
     @Override
     public void dance(Character soulStepper, Character enemy) throws InterruptedException {
         List<String> danceMoves = new ArrayList<>(5);

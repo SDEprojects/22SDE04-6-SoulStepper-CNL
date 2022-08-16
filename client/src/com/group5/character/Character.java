@@ -1,6 +1,7 @@
 package com.group5.character;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 //Character class is abstract and every character extends Character class
@@ -32,15 +33,17 @@ public abstract class Character {
 
     public abstract void beginningDialogue() throws InterruptedException;
 
+    public abstract ArrayList<String> beginningDialogueGUI() throws InterruptedException;
 
     // enemy taunts player during the battle
     public abstract void enemyTaunt() throws InterruptedException;
 
 
-
     // dialogue the characters will have after the dance battles
 
     public abstract void endingDialogue() throws InterruptedException;
+
+    public abstract ArrayList<String> endingDialogueGUI() throws InterruptedException;
 
     // dance method for each character.
 

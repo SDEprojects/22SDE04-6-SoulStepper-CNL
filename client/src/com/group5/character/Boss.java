@@ -72,6 +72,11 @@ public class Boss extends Character {
     }
 
     @Override
+    public ArrayList<String> beginningDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
+    @Override
     public void enemyTaunt() throws InterruptedException{
             List<String> taunts = new ArrayList<>();
             taunts.add("You suck at that move dude.... Check this out.");
@@ -119,7 +124,13 @@ public class Boss extends Character {
         System.out.println("GAME OVER");
         System.exit(0);
     }
-//Random selection for Dance moves for combat of the Boss character
+
+    @Override
+    public ArrayList<String> endingDialogueGUI() throws InterruptedException {
+        return null;
+    }
+
+    //Random selection for Dance moves for combat of the Boss character
     @Override
     public void dance(Character soulStepper, Character enemy) throws InterruptedException {
         List<String> danceMoves = new ArrayList<>(5);

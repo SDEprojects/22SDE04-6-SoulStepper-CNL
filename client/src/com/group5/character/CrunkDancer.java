@@ -15,6 +15,46 @@ public class CrunkDancer extends Character {
     }
 
     //Time dialogue before combat of CrunkDancer enemy character when engaging in combat with player
+    public ArrayList<String> beginningDialogueGUI() throws InterruptedException {
+        ArrayList<String> dialogue = new ArrayList<>();
+        dialogue.add(".....");
+        dialogue.add("Nathan: *performs dance move 'show-off'*");
+        dialogue.add("*The crowd roars*");
+        dialogue.add("Soulstepper: Hey kid, you seem to be the main attraction here.");
+        dialogue.add("Nathan: Seems like it right, worked my butt of to get to this point.");
+        dialogue.add("Soulstepper: I respect that, hard work pays off.");
+        dialogue.add("Nathan: You seem like you got some soul in you, \nI still got some time before I have to head out. \nYou wanna face off?");
+        dialogue.add("SoulStepper: Sure, I can spare some time, plus it seems like this crowd wants to see more.");
+        dialogue.add("Nathan: That's what I'm talking about, let's get it.");
+        dialogue.add("ALERT!!");
+        dialogue.add("ALERT!!");
+        dialogue.add("ALERT!!");
+        dialogue.add(this.getName() + " challenges you to a dance off");
+        dialogue.add("Ready? Let's dance!");
+
+        return dialogue;
+    }
+
+    public ArrayList<String> endingDialogueGUI() throws InterruptedException {
+        ArrayList<String> dialogue = new ArrayList<>();
+        dialogue.add(".....");
+        dialogue.add("* crowd erupts in applause *");
+        dialogue.add("Nathan: Woah dude, you taught me something tonight. You really don't mess around");
+        dialogue.add("Soulstepper: Haha so I've been told");
+        dialogue.add("Nathan: Only other person to defeat me in a face-off of like this is that snake LoVibe.\n The guy made me look like a fool out here.");
+        dialogue.add("Soulstepper: .....");
+        dialogue.add("Nathan: I've been working hard ever since to challenge him again and earn my respect back. But it seems I still have a long way to go.");
+        dialogue.add("Soulstepper: Keep, working kid. You'll get there, and when you do I'll be there to see it. For now, I have somewhere I have to be. Peace kid.");
+        dialogue.add("Nathan: Peace.");
+        dialogue.add("You defeated "+ this.getName() + " with your soul and can now move on.");
+        dialogue.add("ALERT!!");
+        dialogue.add("ALERT!!");
+        dialogue.add(this.getName() + " challenges you to a dance off");
+        dialogue.add("Ready? Let's dance!");
+
+        return dialogue;
+    }
+
     @Override
     public void beginningDialogue() throws InterruptedException {
         System.out.println(".....");

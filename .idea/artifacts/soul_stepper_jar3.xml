@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="soul-stepper:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/soul_stepper_jar</output-path>
+  <artifact type="jar" name="soul-stepper:jar3">
+    <output-path>$PROJECT_DIR$/out/artifacts/soul_stepper_jar3</output-path>
     <root id="archive" name="soul-stepper.jar">
       <element id="module-output" name="soul-stepper" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.9.1/gson-2.9.1.jar" path-in-jar="/" />
