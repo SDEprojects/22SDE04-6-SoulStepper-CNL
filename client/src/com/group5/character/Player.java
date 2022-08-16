@@ -57,7 +57,7 @@ public class Player extends Character {
 
     public int xpAmount(){
         Random r = new Random();
-        int randomNumber = r.ints(1, 0, 11).findFirst().getAsInt();
+        int randomNumber = r.ints(1, 1, 11).findFirst().getAsInt();
 
         return randomNumber;
     }
@@ -74,7 +74,7 @@ public class Player extends Character {
     }
 
     @Override
-    public void beginningDialogue() throws InterruptedException {
+    public void beginningDialogue()  {
 
     }
 
@@ -125,7 +125,7 @@ public class Player extends Character {
     // outputs a string with the players current health
 
     public void currentHealth() {
-        System.out.println("Soul-stepper's current health is " + this.getHealth());
+        System.out.println("Soulsteppers current health is " + this.getHealth());
     }
 
     // players dance method which takes the current enemy and the current player object
@@ -153,14 +153,15 @@ public class Player extends Character {
 
                 switch (userChoice) {
                     case "1":
-                        System.out.println("Soul-stepper hit em with the Hustle!");
+                        System.out.println("Soulstepper hit em with the Hustle!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s felt the soul, and there current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
+                        }
+                        else {
                             System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
@@ -168,14 +169,15 @@ public class Player extends Character {
                         break;
 
                     case "2":
-                        System.out.println("Soul-stepper broke out the Bus Stop!");
+                        System.out.println("Soulstepper broke out the Bus Stop!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s got hit by the bus, and there current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
+                        }
+                        else {
                             System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
@@ -183,14 +185,15 @@ public class Player extends Character {
                         break;
 
                     case "3":
-                        System.out.println("Soul-stepper took it back to the 70's with the Michael Jackson Robot!");
+                        System.out.println("Soulstepper took it back to the 70's with the Michael Jackson Robot!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s got hit by little Michael's spirit, and there current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
-                        } else {
+                        }
+                        else {
                             System.out.println("You received " + xpAmount() + " XP!");
                             awardXp(xpAmount());
                             enemy.endingDialogue();
@@ -198,10 +201,10 @@ public class Player extends Character {
                         break;
 
                     case "4":
-                        System.out.println("Soul-stepper was feeling a little weird and did the Funky Chicken!");
+                        System.out.println("Soulstepper was feeling a little weird and did the Funky Chicken!");
                         System.out.println();
                         enemy.decreaseHealth();
-                        System.out.printf("%s got pecked by the chicken, and their current health is %s !", enemy.getName(), enemy.getHealth());
+                        System.out.printf("%s got pecked by the chicken, and there current health is %s !", enemy.getName(), enemy.getHealth());
                         System.out.println();
                         if (enemy.getHealth() > 0) {
                             enemy.dance(soulStepper, enemy);
@@ -217,7 +220,7 @@ public class Player extends Character {
                         System.out.println();
                 }
             } else {
-                System.out.println("Soul-Stepper was defeated!");
+                System.out.println("Soul Stepper was defeated!");
                 System.out.println();
                 System.out.println("GAME OVER");
                 System.exit(0);
@@ -249,7 +252,7 @@ public class Player extends Character {
 
                 switch (userChoice) {
                     case "1":
-                        System.out.println("Soul-stepper hit em with the Hustle!");
+                        System.out.println("Soulstepper hit em with the Hustle!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s felt the soul, and there current health is %s !", enemy.getName(), enemy.getHealth());
@@ -265,7 +268,7 @@ public class Player extends Character {
                         break;
 
                     case "2":
-                        System.out.println("Soul-stepper broke out the Bus Stop!");
+                        System.out.println("Soulstepper broke out the Bus Stop!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s got hit by the bus, and their current health is %s !", enemy.getName(), enemy.getHealth());
@@ -281,7 +284,7 @@ public class Player extends Character {
                         break;
 
                     case "3":
-                        System.out.println("Soul-stepper took it back to the 70's with the Michael Jackson Robot!");
+                        System.out.println("Soulstepper took it back to the 70's with the Michael Jackson Robot!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s got hit by little Michael's spirit, and their current health is %s !", enemy.getName(), enemy.getHealth());
@@ -297,7 +300,7 @@ public class Player extends Character {
                         break;
 
                     case "4":
-                        System.out.println("Soul-stepper was feeling a little weird and did the Funky Chicken!");
+                        System.out.println("Soulstepper was feeling a little weird and did the Funky Chicken!");
                         System.out.println();
                         enemy.decreaseHealth();
                         System.out.printf("%s got pecked by the chicken, and their current health is %s !", enemy.getName(), enemy.getHealth());
